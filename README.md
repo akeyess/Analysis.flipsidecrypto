@@ -1,7 +1,9 @@
 # Analysis.flipsidecrypto
 Repository for completed data analysis projects from flipsidecrypto.xyz. Problem solving SQL queries are broken down here, while the results of the query can be found linked in each project description. Linked is a dashboard containing visualizations, results tables, and brief summaries.
 
-# #project1a- [Terra] UST Deposits on Anchor Protocol 
+These projects are conducted through *flipsidecrypto.xyz*, which provides a plethora of data tasks related to blockchain technology, as well as programs for SQL queries, data visuals, and create dashboards.
+
+# #project1- [Terra] UST on Anchor Protocol 
  
 ## *How much UST was deposited into Anchor daily in the past 30 days?*
 
@@ -24,9 +26,6 @@ group by day
 - querying from the 'anchor.deposits' table 
 - where the timestamp is within the past 30 days
 - added a 'group by' because "whenever we have an aggregate, like the sum function, we need to tell the query which column we are ‘grouping it’ by"
-
-
-# #project1b- [Terra] UST Borrows on Anchor Protocol 
  
 ## *What was the volume of UST borrowed from Anchor daily from February 1 - February 28, 2022?*
 
