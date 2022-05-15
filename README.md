@@ -1,5 +1,5 @@
 # Analysis.flipsidecrypto
-Projects completed from flipsidecrypto.xyz data analysis tasks.
+Projects completed from flipsidecrypto.xyz data analysis tasks. SQL queries created to solve problems are broken down here, while the results of the query can be found linked in each project description. Linked is a dashboard with visualizations, results tables, and brief summaries.
 
 # #project1- [Terra] 2. UST Deposits on Anchor Protocol 
  
