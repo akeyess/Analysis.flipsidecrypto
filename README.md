@@ -1,8 +1,9 @@
 # Analysis.flipsidecrypto
 Projects completed from flipsidecrypto.xyz data analysis tasks.
+
+# project1- [Terra] 2. UST Deposits on Anchor Protocol 
  
- 
-How much UST was deposited into Anchor in the past 30 days?
+## How much UST was deposited into Anchor in the past 30 days?
 
 
 ```
