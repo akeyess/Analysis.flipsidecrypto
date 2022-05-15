@@ -25,8 +25,6 @@ group by day
 - where the timestamp is within the past 30 days
 - added a 'group by' because "whenever we have an aggregate, like the sum function, we need to tell the query which column we are ‘grouping it’ by"
 
-[Data visualization and results table from SQL query are available here](https://app.flipsidecrypto.com/dashboard/terra-2-ust-deposits-on-anchor-protocol-sb3qpz)
-
 
 # #project1b- [Terra] UST Borrows on Anchor Protocol 
  
@@ -44,3 +42,5 @@ group by day
 - used select and from functions in the same manner as the previous project, replaced deposit with borrow
 - where the block is greater than or equal to Feb 1st and less than or equal to Feb 28
 - added group by for the same reason as previous query
+
+[Data visualization and results table from SQL query are available here](https://app.flipsidecrypto.com/dashboard/terra-2-ust-deposits-on-anchor-protocol-sb3qpz)
