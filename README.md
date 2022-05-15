@@ -42,4 +42,19 @@ group by day
 - where the block is greater than or equal to Feb 1st and less than or equal to Feb 28
 - added group by for the same reason as previous query
 
+## *What was the volume of UST borrowed from Anchor daily from February 1 - February 28, 2022?*
+
+```
+SELECT
+	date_trunc('day',block_timestamp) as day,
+	sum(deposit_amount) as ust_deposited
+from anchor.deposits
+where block_timestamp >= '2022-02-01'
+and block_timestamp <= '2022-02-28'
+group by day
+```
+- same function as previous except move from borrows table to deposits table
+
+Visual comparison of the two variable: UST deposits and borrows on Anchor, depicts multiple relationship throughout the month. Around Feb 7 both charts depicted a major downtrennd until both began to head the opposite direction starting on Feb 12. A spike in dollar amount of both variables was found on Feb 23, leading to an overall downtrend of both amounts until the end of the month.
+
 [Data visualization and results table from SQL query are available here](https://app.flipsidecrypto.com/dashboard/terra-2-ust-deposits-on-anchor-protocol-sb3qpz)
