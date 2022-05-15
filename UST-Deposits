@@ -6,3 +6,8 @@ from anchor.deposits
 where block_timestamp >= current_date - 30
 group by day
 ```
+```
+git status
+git add
+git commit
+```
