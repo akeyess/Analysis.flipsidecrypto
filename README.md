@@ -26,3 +26,21 @@ group by day
 - added a 'group by' because "whenever we have an aggregate, like the sum function, we need to tell the query which column we are ‘grouping it’ by"
 
 [Data visualization and results table from SQL query are available here](https://app.flipsidecrypto.com/dashboard/terra-2-ust-deposits-on-anchor-protocol-sb3qpz)
+
+
+# #project2- [Terra] 2. UST Borrows on Anchor Protocol 
+ 
+## What was the volume of UST borrowed from Anchor daily from February 1 - February 28, 2022?
+
+```
+SELECT
+	date_trunc('day',block_timestamp) as DAY,
+	sum(amount) as ust_borrowed
+from anchor.borrows
+where block_timestamp >= '2022-02-01'
+and block_timestamp <= '2022-02-28'
+group by day
+```
+- used select and from functions in the same manner as the previous project, replaced deposit with borrow
+- where the block is greater than or equal to Feb 1st and less than or equal to Feb 28
+- added group by for the same reason as previous query
