@@ -401,5 +401,26 @@ FROM
 
 With this query, we have 1)found swap events within USDC-WETH pool in the last 7 days, 2)found both pool and token contract details for the tokens in the USDC-WETH pool, 3)how to manipulate data embedded within a JSON object column, 4)how to decimal transform token amounts
 
+Using this info we can now
+1. Count trades by day
+2. Sum USDC volume for USDC to WETH trades
+3. Sum USDC volume for WETH to USDC trades
+4. Add all USDC volume together
+5. Aggregate by day
 
-
+### FinaL query adds this select state to above query
+```
+SELECT
+   DATE_TRUNC(
+       'day',
+       block_timestamp
+   ) AS DATE,
+   COUNT(tx_hash) AS swap_count,
+   SUM(amount0In_ADJ) + SUM(amount0Out_ADJ) AS usdc_vol
+FROM
+   final_details
+GROUP BY
+   DATE
+ORDER BY
+   DATE DESC
+```
