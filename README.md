@@ -80,7 +80,7 @@ WHERE
 - 'and' contract address where the event occured, in this case a swap. We will want to filter this for the USDC-WETH pool address above.
 - 'and' the name of the event emiited by the contract. Contracts can have many event types for the same contract address, so we'll want to filter this only for swap events
 
-SAMPLE OUTPUT
+SAMPLE OUTPUT for a value of 'EVENTS_INPUTS' column (came in JSON format)- describes the transaction in this case as token0 out and token1 in. With 5355072563 token0 out, and 1830000000000000000 token1 in.
 ```
 {  "amount0In": 0,  
 "amount0Out": 5355072563,
@@ -91,6 +91,7 @@ SAMPLE OUTPUT
 ```
 
 ## *Which token is amount0 and which is amount1?*
+## *What is the true value of tokens for each token in the transaction? (not actually recieving 1830000000000000000 tokens, it is in scientific notation)
 
 Flipside has a DIM_DEX_LIQUIDITY_POOLS table, which contains details about different liquidity pools on Ethereum. We will query this table for the USDC-WETH pool address to find details on the pool.
 
@@ -160,7 +161,7 @@ WHERE
 :-------------------------:|:-------------------------:|:-------------------------:|:-------------------------:
 USDC-WETH SLP | 0x397ff1542f962076d0bfe58ea045ffa2d347aca0 |  0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48  |  0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2
 
-Now with the address, symbol, and decimals for both token0 and token1, we can put this info into one quey building onto the CTE from earlier
+Dispplays the same output as previously seen. Now with the address, symbol, and decimals for both token0 and token1, we can put this info into one query building onto the CTE from earlier
 
 ```
 WITH pools AS (
@@ -214,3 +215,5 @@ FROM
 **POOL_NAME**  |          **POOL_ADDRESS**          |  **TOKEN0**  |  **TOKEN1**  |  **TOKEN0SYMBOL**  |  **TOKEN1SYMBOL**  |  **TOKEN0DECIMALS**  |  **TOKEN1DECIMALS**
 :-------------------------:|:-------------------------:|:-------------------------:|:-------------------------:|:-------------------------:|:-------------------------:|:-------------------------:|:-------------------------:
 USDC-WETH SLP | 0x397ff1542f962076d0bfe58ea045ffa2d347aca0 |  0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48  |  0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2  |  USDC  |  WETH  |  6  |  18
+
+We now can see that token0 is USDC and uses 6 decimal transformation off the original value, while token1 is WETH and is 18 transformed decimal places.
