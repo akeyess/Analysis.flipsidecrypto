@@ -105,6 +105,12 @@ FROM
 WHERE
    pool_address = LOWER('0x397FF1542f962076d0BFE58eA045FfA2d347ACa0')
 ```
+
+## **OUTPUT**
+**POOL_NAME**  |          **POOL_ADDRESS**          |  **TOKEN0**  |  **TOKEN1**
+:-------------------------:|:-------------------------:|:-------------------------:|:-------------------------:
+USDC-WETH SLP | 0x397ff1542f962076d0bfe58ea045ffa2d347aca0 |  0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48  |  0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2
+
 - displayed/'selected' pool name, token address, 'token0' and 'token1'
 - 'from' table containing info on liquidity pools
 - 'where' pool address equals USDC-WETH pool address
@@ -148,10 +154,63 @@ WHERE
 - 'from' contract table
 - 'where' address equals token0 or token1
 
-OUTPUT
-POOL_NAME	POOL_ADDRESS	TOKEN0	TOKEN1
-USDC-WETH SLP, 0x397ff1542f962076d0bfe58ea045ffa2d347aca0, 0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48, 0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2
+## **OUTPUT**
 
 **POOL_NAME**  |          **POOL_ADDRESS**          |  **TOKEN0**  |  **TOKEN1**
 :-------------------------:|:-------------------------:|:-------------------------:|:-------------------------:
 USDC-WETH SLP | 0x397ff1542f962076d0bfe58ea045ffa2d347aca0 |  0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48  |  0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2
+
+Now with the address, symbol, and decimals for both token0 and token1, we can put this info into one quey building onto the CTE from earlier
+
+```
+WITH pools AS (
+SELECT 
+pool_name, 
+pool_address, 
+token0, 
+token1 
+FROM ETHEREUM_CORE.DIM_DEX_LIQUIDITY_POOLS 
+WHERE pool_address = LOWER('0x397FF1542f962076d0BFE58eA045FfA2d347ACa0')),
+decimals AS (
+   SELECT
+       address,
+       symbol,
+       decimals
+   FROM
+       ETHEREUM_CORE.DIM_CONTRACTS
+   WHERE
+       address = (
+           SELECT
+               LOWER(token1)
+           FROM
+               pools
+       )
+       OR address = (
+           SELECT
+               LOWER(token0)
+           FROM
+               pools
+       )
+)
+SELECT
+   pool_name,
+   pool_address,
+   token0,
+   token1,
+   token0.symbol AS token0symbol,
+   token1.symbol AS token1symbol,
+   token0.decimals AS token0decimals,
+   token1.decimals AS token1decimals
+FROM
+   pools
+   LEFT JOIN decimals AS token0
+   ON token0.address = token0
+   LEFT JOIN decimals AS token1
+   ON token1.address = token1
+```
+
+### **OUTPUT**
+
+**POOL_NAME**  |          **POOL_ADDRESS**          |  **TOKEN0**  |  **TOKEN1**  |  **TOKEN0SYMBOL**  |  **TOKEN1SYMBOL**  |  **TOKEN0DECIMALS**  |  **TOKEN1DECIMALS**
+:-------------------------:|:-------------------------:|:-------------------------:|:-------------------------:|:-------------------------:|:-------------------------:|:-------------------------:|:-------------------------:
+USDC-WETH SLP | 0x397ff1542f962076d0bfe58ea045ffa2d347aca0 |  0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48  |  0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2  |  USDC  |  WETH  |  6  |  18
