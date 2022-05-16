@@ -105,6 +105,49 @@ FROM
 WHERE
    pool_address = LOWER('0x397FF1542f962076d0BFE58eA045FfA2d347ACa0')
 ```
-- displayed/'selected' pool name and token address for 'token0' and 'token1'
+- displayed/'selected' pool name, token address, 'token0' and 'token1'
 - 'from' table containing info on liquidity pools
 - 'where' pool address equals USDC-WETH pool address
+
+Above query was for demonstration, now we need to reference the dim_contracts table to find details on the respective tokens, we can use a Common Table Expression (CTE) to filter the contracts table for token0 and token1
+
+```
+WITH pools AS (
+   SELECT
+       pool_name,
+       pool_address,
+       token0,
+       token1
+   FROM
+       ETHEREUM_CORE.DIM_DEX_LIQUIDITY_POOLS
+   WHERE
+       pool_address = LOWER('0x397FF1542f962076d0BFE58eA045FfA2d347ACa0')
+)
+SELECT
+   address,
+   symbol,
+   decimals
+FROM
+   ETHEREUM_CORE.DIM_CONTRACTS
+WHERE
+   address = (
+       SELECT
+           LOWER(token1)
+       FROM
+           pools
+   )
+   OR address = (
+       SELECT
+           LOWER(token0)
+       FROM
+           pools
+   )
+```
+- 'select' pools with the parameters set by the where clause, bringing the exact token0 token1 pooladdress and poolname from the dataset
+- 'select' address.symbol,decimals
+- 'from' contract table
+- 'where' address equals token0 or token1
+
+OUTPUT
+POOL_NAME	POOL_ADDRESS	TOKEN0	TOKEN1
+USDC-WETH SLP, 0x397ff1542f962076d0bfe58ea045ffa2d347aca0, 0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48, 0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2
