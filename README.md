@@ -58,3 +58,53 @@ group by day
 Visual comparison of the two variable: UST deposits and borrows on Anchor, depicts multiple relationship throughout the month. Around Feb 7 both charts depicted a major downtrennd until both began to head the opposite direction starting on Feb 12. A spike in dollar amount of both variables was found on Feb 23, leading to an overall downtrend of both amounts until the end of the month.
 
 [Data visualization and results table from SQL query are available here](https://app.flipsidecrypto.com/dashboard/terra-2-ust-deposits-on-anchor-protocol-sb3qpz)
+
+# #project2- [Ethereum] Ethereum_Core Table: Swaps 
+ 
+## *Find swaps in the USDC-WETH Sushi Pool from the past 7 days?*
+
+```
+SELECT
+   *
+FROM
+   ETHEREUM_CORE.FACT_EVENT_LOGS
+WHERE
+   block_timestamp >= CURRENT_DATE - 6
+   AND contract_address = LOWER('0x397FF1542f962076d0BFE58eA045FfA2d347ACa0') 
+-- this is the USDC-WETH SushiSwap Pool Address
+   AND event_name IN ('Swap')
+```
+- Used 'select *' to preview all of the columns
+- This particular SQL project focuses on the new 'ethereum_core' tables
+- 'where' block timestamp is equal to or less than 6 days ago, totaling to 7 days including present date
+- 'and' contract address where the event occured, in this case a swap. We will want to filter this for the USDC-WETH pool address above.
+- 'and' the name of the event emiited by the contract. Contracts can have many event types for the same contract address, so we'll want to filter this only for swap events
+
+SAMPLE OUTPUT
+```
+{  "amount0In": 0,  
+"amount0Out": 5355072563,
+"amount1In": 1830000000000000000,
+"amount1Out": 0,
+"sender": "0xd9e1ce17f2641f24ae83637ab66a2cca9c378b9f",
+"to": "0x5f09ef7d8a3f9b63c5227fd6aabe0b3822aa6fdb"}
+```
+
+## *Which token is amount0 and which is amount1?*
+
+Flipside has a DIM_DEX_LIQUIDITY_POOLS table, which contains details about different liquidity pools on Ethereum. We will query this table for the USDC-WETH pool address to find details on the pool.
+
+```
+SELECT
+   pool_name,
+   pool_address,
+   token0,
+   token1
+FROM
+   ETHEREUM_CORE.DIM_DEX_LIQUIDITY_POOLS
+WHERE
+   pool_address = LOWER('0x397FF1542f962076d0BFE58eA045FfA2d347ACa0')
+```
+- displayed/'selected' pool name and token address for 'token0' and 'token1'
+- 'from' table containing info on liquidity pools
+- 'where' pool address equals USDC-WETH pool address
