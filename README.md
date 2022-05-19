@@ -59,6 +59,63 @@ Visual comparison of the two variable: UST deposits and borrows on Anchor, depic
 
 [Data visualization and results table from SQL query are available here](https://app.flipsidecrypto.com/dashboard/terra-2-ust-deposits-on-anchor-protocol-sb3qpz)
 
+# #project2- [ALGO] Getting Started With Algorand Bounties 
+
+## *we want to look at what is attracting new users(wallets) to Algorand in 2022. One way we can do this is looking at what assets new wallets hold. That way we can see what protocols/projects the new wallets are invested in. We can do this with the account, block, and account_asset table*
+- going to use block table with account table to compute ranking of most held coins by wallets created in 2022.
+
+```
+select distinct address
+
+from algorand.account account
+left join algorand.block block on account.created_at = block.block_id
+where block.block_timestamp::date >= '2022-01-01'
+
+limit 10
+```
+- select unique(distinct/no-repeats) addresses, no duplicates
+- from the algorand schema and the account table. We gave the account table the alias account so we can join it w other tables and not get confused
+- left join algorand.block table and algorand.account table. Join allows you to connect to tables based on columns from each table that are matching. matching the account.created_at column from the from algorand.account account table(which we have named account) to the block.block_id column from the algorand.block block table which we have named block. now we can bring in other columns from the block table, in thise case we want to look at block timestamp
+- where fits certain criteria, and in our case we want to look where block.block_timestamp is CAST(::) to be greater than the date >='2022-01-01' instead of it being a timestamp which includes date and time.
+
+## We've answered the 1st part of the question, which wallets were created in 2022, now we want to understand what ASAs(Algorand Standard Assets) these wallets hold.
+
+Now it’s time to build on our first query. Now that we have a list of the wallets we have to look at the account_asset table which gives us a near real-time ledger of all the ASAs each wallet is opted in to and a balance if they hold any of that asset.
+
+```
+with addresses as(
+select distinct address 
+from algorand.account account
+left join algorand.block block on account.created_at = block.block_id
+where block.block_timestamp::date >= '2022-01-01'
+) 
+  
+select ASA.asset_id, ASA.asset_name, count(addresses.address) as number_of_wallets
+from algorand.account_asset ASA 
+left join addresses addresses on ASA.address = addresses.address
+where addresses.address is not null  
+	and ASA.amount > 0  
+	group by ASA.asset_id, ASA.asset_name  
+	order by number_of_wallets desc
+limit 10
+```
+- top part of query is exact same as previous one, except removed limit 10, and added with addresses as( to make a new table containing the data from query,
+- next select statement displays assest id, assest name, and counts # of address in addresses table as number_of_wallets
+- from algo schema from account_asset table, also giving the account_asset table the alias of ASA so we can join it with other tables and not get confused if there are columns with the same name between the two tables.
+- We are joining the table we made with our subquery(addresses addresses) and giving it the alias addresses, We are joining the two tables on the address column from both tables - good thing we gave each table an alias! ASA.address = addresses.address
+- where addresses.address column is not null, to make sure that the amounts of each account_asset row have an amount greater than 0. We do this because a wallet could have opted in to an asset or previously held it but does not hold it anymore and we only want to look at the asset address rows where the wallet holds some of the asset
+- We also want to make sure that the amounts of each account_asset row have an amount greater than 0. We do this because a wallet could have opted in to an asset or previously held it but does not hold it anymore and we only want to look at the asset address rows where the wallet holds some of the asset
+- Since we want to look at the most popular assets held by wallets created in 2022 - we are going to want to aggregate it by the ASA.asset_id, ASA.asset_name for more detail.
+- We also want to have the asset_ids with the most number of addresses so we are going to order by desc
+- We added a limit to this query since we only wanted to look at the top 10 assets
+
+# #project2- [Ethereum] Ethereum_Core Table: Swaps 
+ 
+## *Find swaps in the USDC-WETH Sushi Pool from the past 7 days?*
+
+
+
+
 # #project2- [Ethereum] Ethereum_Core Table: Swaps 
  
 ## *Find swaps in the USDC-WETH Sushi Pool from the past 7 days?*
