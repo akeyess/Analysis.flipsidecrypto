@@ -481,3 +481,13 @@ GROUP BY
 ORDER BY
    DATE DESC
 ```
+
+
+
+
+TIPS-
+
+Please note: When running a query to create a dashboard to show your transactions, please add the following:
+
+[ where block_timestamp::date = ‘2022-01-01’ (replace this with the date of your transaction) ]
+
