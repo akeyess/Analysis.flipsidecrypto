@@ -1,12 +1,17 @@
-# Analysis.flipsidecrypto
-Repository for completed data analysis projects from flipsidecrypto.xyz. Problem solving SQL queries are broken down here, while the results of the query can be found linked in each project description. Linked is a dashboard containing visualizations, results tables, and brief summaries.
+# Analysis Projects with [flipsidecrypto](https://flipsidecrypto.xyz/)
+- Repository of completed flipsidecrypto.xyz data analysis projects. Here, SQL queries are broken down, while visuals and tables of the query can be found linked in each project description. Linked is a dashboard containing visualizations, results tables, and brief summaries.
 
-These projects are conducted through *flipsidecrypto.xyz*, which provides a plethora of data tasks related to blockchain technology, as well as programs for SQL queries, data visuals, and dashboard creation.
+- These projects are conducted through [*flipsidecrypto.xyz*](https://flipsidecrypto.xyz/), a provider of a plethora of data tasks related to blockchain technology, as well as programs for SQL queries, data visuals, and dashboard creation to showcase answers to tasks.
 
-# #project1- [Terra] UST on Anchor Protocol 
+## Project #1- [Terra] UST on Anchor Protocol 
+
+**3 Objectives:**
+- Visualize daily UST deposit amount into Anchor Protocol over the past 30 days
+- Learn about daily UST borrow amount from Anchor Protocol in February 2022
+- Compare daily UST borrow amount to daily UST deposit amount on Anchor Protocol in February 2022
  
-## *How much UST was deposited into Anchor daily in the past 30 days?*
-
+### *How much UST was deposited into Anchor daily in the past 30 days?*
+**Objective number one**: Visualize daily UST deposit amount into Anchor Protocol over the past 30 days
 
 ```
 SELECT
@@ -27,8 +32,8 @@ group by day
 - where the timestamp is within the past 30 days
 - added a 'group by' because "whenever we have an aggregate, like the sum function, we need to tell the query which column we are ‘grouping it’ by"
  
-## *What was the volume of UST borrowed from Anchor daily from February 1 - February 28, 2022?*
-
+### *What was the volume of UST borrowed from Anchor daily from February 1 - February 28, 2022?*
+**Objective number two**: Learn about daily UST borrow amount from Anchor Protocol in February 2022Learn about daily UST borrow amount from Anchor Protocol in February 2022
 ```
 SELECT
 	date_trunc('day',block_timestamp) as DAY,
@@ -42,8 +47,8 @@ group by day
 - where the block is greater than or equal to Feb 1st and less than or equal to Feb 28
 - added group by for the same reason as previous query
 
-## *What was the volume of UST borrowed from Anchor daily from February 1 - February 28, 2022?*
-
+### *What was the volume of UST borrowed from Anchor daily from February 1 - February 28, 2022?*
+**Objective number three**: Compare daily UST borrow amount to daily UST deposit amount on Anchor Protocol in February 2022
 ```
 SELECT
 	date_trunc('day',block_timestamp) as day,
@@ -59,9 +64,9 @@ Visual comparison of the two variable: UST deposits and borrows on Anchor, depic
 
 [Data visualization and results table from SQL query are available here](https://app.flipsidecrypto.com/dashboard/terra-2-ust-deposits-on-anchor-protocol-sb3qpz)
 
-# #project2- [ALGO] Getting Started With Algorand Bounties 
+## #project2- [ALGO] Getting Started With Algorand Bounties 
 
-## *we want to look at what is attracting new users(wallets) to Algorand in 2022. One way we can do this is looking at what assets new wallets hold. That way we can see what protocols/projects the new wallets are invested in. We can do this with the account, block, and account_asset table*
+### *we want to look at what is attracting new users(wallets) to Algorand in 2022. One way we can do this is looking at what assets new wallets hold. That way we can see what protocols/projects the new wallets are invested in. We can do this with the account, block, and account_asset table*
 - going to use block table with account table to compute ranking of most held coins by wallets created in 2022.
 
 ```
@@ -78,7 +83,7 @@ limit 10
 - left join algorand.block table and algorand.account table. Join allows you to connect to tables based on columns from each table that are matching. matching the account.created_at column from the from algorand.account account table(which we have named account) to the block.block_id column from the algorand.block block table which we have named block. now we can bring in other columns from the block table, in thise case we want to look at block timestamp
 - where fits certain criteria, and in our case we want to look where block.block_timestamp is CAST(::) to be greater than the date >='2022-01-01' instead of it being a timestamp which includes date and time.
 
-## We've answered the 1st part of the question, which wallets were created in 2022, now we want to understand what ASAs(Algorand Standard Assets) these wallets hold.
+### We've answered the 1st part of the question, which wallets were created in 2022, now we want to understand what ASAs(Algorand Standard Assets) these wallets hold.
 
 Now it’s time to build on our first query. Now that we have a list of the wallets we have to look at the account_asset table which gives us a near real-time ledger of all the ASAs each wallet is opted in to and a balance if they hold any of that asset.
 
