@@ -126,15 +126,15 @@ limit 10
 [Data visualization and results table from SQL query are available here](https://app.flipsidecrypto.com/dashboard/algorand-inspecting-the-most-popular-as-as-held-by-wallets-created-in-2022-tisnoz)
 
 
-# #project2- [Ethereum] Ethereum_Core Table: Swaps 
+### Project #3- [Solana] Orca vs Jupiter Swap Volume Feb 2022
  
 ## *Find swaps in the USDC-WETH Sushi Pool from the past 7 days?*
 
 
 
-# #project2- [Ethereum] Ethereum_Core Table: Swaps 
+## #project2- [Ethereum] Ethereum_Core Table: Swaps 
  
-## *Find swaps in the USDC-WETH Sushi Pool from the past 7 days?*
+### *Find swaps in the USDC-WETH Sushi Pool from the past 7 days?*
 
 ```
 SELECT
